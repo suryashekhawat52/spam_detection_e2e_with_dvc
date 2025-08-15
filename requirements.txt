@@ -1,4 +1,7 @@
 pandas
 numpy
 matplotlib
+scikit-learn
+spacy
+xgboost
 -e .
