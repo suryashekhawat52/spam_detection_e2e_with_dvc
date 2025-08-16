@@ -32,14 +32,15 @@ class DataTransformation:
             train_df = pd.read_csv(train_data_path)
             test_df = pd.read_csv(test_data_path)
             logging.info("Data read successfully")
+            logging.info(f"{train_df.head()}")
 
             # Label encoding the Target variable
             encoder = LabelEncoder()
             y_train = encoder.fit_transform(train_df['label'])
             y_test = encoder.transform(test_df['label'])
-            # converting into numpy array
-            y_train = np.array(train_df['label'])
-            y_test = np.array(test_df['label'])
+            # Ensure integer type
+            y_train = y_train.astype(int)
+            y_test = y_test.astype(int)
             logging.info("Label encoding successful")
 
             X_train = train_df['message'].apply(text_processing)
@@ -48,13 +49,10 @@ class DataTransformation:
 
             logging.info("Tfidf started")
             preprocessor_obj = self.get_data_transformation_object()
-            X_train = preprocessor_obj.fit_transform(train_df['message']).toarray()
-            X_test = preprocessor_obj.transform(test_df['message']).toarray()
+            X_train = preprocessor_obj.fit_transform(X_train).toarray()
+            X_test = preprocessor_obj.transform(X_test).toarray()
             logging.info("Tfidf process completed")
     
-            #concatenating the features and target
-            train_arr = np.c_[X_train,y_train]
-            test_arr = np.c_[X_test, y_test]
 
             save_object(
                 file_path= self.data_transformation_config.preprocessor_obj_file_path, 
@@ -67,8 +65,8 @@ class DataTransformation:
             logging.info("preprocssor pickle file saved")
 
             return (
-                train_arr,
-                test_arr,
+                X_train, y_train,
+                X_test, y_test,
                 self.data_transformation_config.preprocessor_obj_file_path,
                 self.data_transformation_config.label_encoder_file_path
             )

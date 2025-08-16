@@ -11,6 +11,8 @@ import spacy
 
 nlp = spacy.load("en_core_web_sm")
 
+from sklearn.metrics import precision_score, accuracy_score
+
 def text_processing(text):
     """This function helps to transform the text data to lemmatised and clear tokens"""
     try:
@@ -39,3 +41,26 @@ def save_object(file_path, obj):
     except Exception as e:
         logging.info("Error Occured in save object function")
         raise CustomException(e,sys)        
+
+def model_evaluation(X_train, y_train, X_test, y_test, models):
+    try:
+        model_report = {}
+        for i, (name, model) in enumerate(models.items()):
+            #Train model
+            model.fit(X_train, y_train)
+
+            #prediction
+            y_pred = model.predict(X_test)
+
+            #accuracy
+            accuracy = accuracy_score(y_test, y_pred)
+            precision = precision_score(y_test, y_pred)
+            model_report[name] = {
+                "accuracy_score" : accuracy,
+                "precision_score": precision
+            }
+
+        return model_report
+
+    except Exception as e:
+        raise CustomException(e,sys)
