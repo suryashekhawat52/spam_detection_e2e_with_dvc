@@ -4,4 +4,5 @@ matplotlib
 scikit-learn
 spacy
 xgboost
+Flask
 -e .
