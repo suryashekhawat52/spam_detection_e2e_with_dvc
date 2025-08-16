@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
 from src.logger import logging
 from src.exception import CustomException
-
+from src.components.data_transformation import DataTransformation
 #Initialization of data ingestion process
 
 #creating a data config class that will store the paths
@@ -53,3 +53,6 @@ class DataIngestion:
 if __name__ == '__main__':
     obj = DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
+    data_transformation = DataTransformation()
+    train_arr, test_arr,_,_ =  data_transformation.data_transformation_initiated(train_data,test_data)
+
