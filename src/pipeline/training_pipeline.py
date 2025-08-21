@@ -4,6 +4,7 @@ import os
 from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
 from src.logger import logging
+logger = logging.getLogger(__name__)
 from src.exception import CustomException
 from src.components.data_ingestion import DataIngestion
 from src.components.data_transformation import DataTransformation

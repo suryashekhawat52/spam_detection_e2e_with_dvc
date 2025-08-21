@@ -1,0 +1,22 @@
+schema: '2.0'
+stages:
+  training:
+    cmd: python src/pipeline/training_pipeline.py
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: 1865a1c3b09381c2d9d4f9bc77d46827
+      size: 484
+    - path: src/pipeline/training_pipeline.py
+      hash: md5
+      md5: 0ccf8fd9d2194593a79b2ee8444df97d
+      size: 819
+    outs:
+    - path: artifacts/metrics.json
+      hash: md5
+      md5: 6ad0cdb682d765507b141da92b661836
+      size: 67
+    - path: artifacts/model.pkl
+      hash: md5
+      md5: 71f86557d4517bdc419cb5cc3355d406
+      size: 126651

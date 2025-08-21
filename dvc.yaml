@@ -1,0 +1,11 @@
+stages:
+  training:
+    cmd: python src/pipeline/training_pipeline.py
+    deps:
+    - src/pipeline/training_pipeline.py 
+    - params.yaml
+    outs:
+    - artifacts/model.pkl
+    metrics:
+    - artifacts/metrics.json
+    

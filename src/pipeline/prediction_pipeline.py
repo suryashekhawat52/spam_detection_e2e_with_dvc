@@ -1,8 +1,8 @@
 import os 
 import sys 
 import pandas as pd
-
 from src.logger import logging
+logger = logging.getLogger(__name__)
 from src.exception import CustomException
 from src.utils import load_obj
 
@@ -25,7 +25,7 @@ class PredictPipeline:
 
             return pred
     except Exception as e:
-        logging.info("Error occured at prediction pipeline")
+        logger.info("Error occured at prediction pipeline")
         raise CustomException(e, sys)
     
 class CustomData:
@@ -42,7 +42,7 @@ class CustomData:
 
             return df
         except Exception as e:
-            logging.info("Error occured in creating dataframe")
+            logger.info("Error occured in creating dataframe")
             raise CustomException(e,sys)
         
     

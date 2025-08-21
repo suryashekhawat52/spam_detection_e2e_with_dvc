@@ -4,6 +4,7 @@ import os
 import sys
 from dataclasses import dataclass
 from src.logger import logging
+logger = logging.getLogger(__name__)
 from src.exception import CustomException
 from src.utils import text_processing
 from src.utils import save_object
@@ -21,7 +22,7 @@ class DataTransformation:
         self.data_transformation_config = DataTransformationConfig()
 
     def get_data_transformation_object(self):
-        logging.info("Data Transformation Initiated")
+        logger.info("Data Transformation Initiated")
         preprocessor = Pipeline(steps=[
             ("tfidf", TfidfVectorizer(max_features = 100))
         ])
@@ -31,8 +32,8 @@ class DataTransformation:
         try:
             train_df = pd.read_csv(train_data_path)
             test_df = pd.read_csv(test_data_path)
-            logging.info("Data read successfully")
-            logging.info(f"{train_df.head()}")
+            logger.info("Data read successfully")
+            logger.info(f"{train_df.head()}")
 
             # Label encoding the Target variable
             encoder = LabelEncoder()
@@ -41,17 +42,19 @@ class DataTransformation:
             # Ensure integer type
             y_train = y_train.astype(int)
             y_test = y_test.astype(int)
-            logging.info("Label encoding successful")
+            logger.info("Label encoding successful")
 
             X_train = train_df['message'].apply(text_processing)
             X_test = test_df['message'].apply(text_processing)
-            logging.info("Text preprocessing successful")
+            X_train.to_csv(os.path.join('artifacts','X_train'), index = False, header = True)
+            X_test.to_csv(os.path.join('artifacts','X_test'), index = False, header =True)
+            logger.info("Text preprocessing successful")
 
-            logging.info("Tfidf started")
+            logger.info("Tfidf started")
             preprocessor_obj = self.get_data_transformation_object()
             X_train = preprocessor_obj.fit_transform(X_train).toarray()
             X_test = preprocessor_obj.transform(X_test).toarray()
-            logging.info("Tfidf process completed")
+            logger.info("Tfidf process completed")
     
 
             save_object(
@@ -62,7 +65,7 @@ class DataTransformation:
                 file_path= self.data_transformation_config.label_encoder_file_path,
                 obj=encoder
             )
-            logging.info("preprocssor pickle file saved")
+            logger.info("preprocssor pickle file saved")
 
             return (
                 X_train, y_train,
@@ -72,7 +75,7 @@ class DataTransformation:
             )
             
         except Exception as e:
-            logging.info("Error occured at data transformation")
+            logger.info("Error occured at data transformation")
             raise CustomException(e,sys)
 
 

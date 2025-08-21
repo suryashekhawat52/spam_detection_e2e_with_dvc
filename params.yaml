@@ -1,0 +1,33 @@
+models:
+  svc:
+    kernel: "sigmoid"
+    gamma: 1.0
+  dtc:
+    max_depth: 5
+  lrc:
+    solver: "liblinear"
+    penalty: "l1"
+  rfc:
+    n_estimators: 100
+    random_state: 2
+  abc:
+    n_estimators: 100
+    random_state: 2
+  bc:
+    n_estimators: 100
+    random_state: 2
+  etc:
+    n_estimators: 100
+    random_state: 2
+  gbt:
+    n_estimators: 100
+    random_state: 2
+  xgb:
+    n_estimators: 100
+    random_state: 2
+
+
+ingestion:
+  test_size: 0.21
+
+

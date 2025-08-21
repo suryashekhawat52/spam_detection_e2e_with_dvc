@@ -6,8 +6,10 @@ import os
 import sys
 import pickle
 from src.logger import logging
+logger = logging.getLogger(__name__)
 from src.exception import CustomException
 import spacy
+import yaml
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -28,7 +30,7 @@ def text_processing(text):
 
         return " ".join(lemmas)
     except Exception as e:
-        logging.info("Error occured in utils text processing function")
+        logger.info("Error occured in utils text processing function")
         raise CustomException(e,sys)
 
 def save_object(file_path, obj):
@@ -39,7 +41,7 @@ def save_object(file_path, obj):
         with open(file_path, 'wb') as file_obj:
             pickle.dump(obj, file_obj)
     except Exception as e:
-        logging.info("Error Occured in save object function")
+        logger.info("Error Occured in save object function")
         raise CustomException(e,sys)        
 
 def model_evaluation(X_train, y_train, X_test, y_test, models):
@@ -71,5 +73,11 @@ def load_obj(file_path):
         with open(file_path, 'rb') as file_obj:
             return pickle.load(file_obj)
     except Exception as e:
-        logging.info("Error Occured in loading pickle file")
+        logger.info("Error Occured in loading pickle file")
         raise CustomException(e,sys)
+    
+
+def read_yaml(file_path:str)-> dict:
+    with open(file_path, 'r') as file_obj:
+        params = yaml.safe_load(file_obj)
+    return params
